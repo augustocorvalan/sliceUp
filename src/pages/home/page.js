@@ -10,7 +10,7 @@ import VideoPlayer from 'common/components/VideoPlayer';
 import ClipPlaylist from 'common/components/ClipPlaylist';
 
 //actions
-import { addClip, deleteClip } from 'actions/clips';
+import { addClip, deleteClip, saveClip } from 'actions/clips';
 import { setVideoRange, setVideoMetadata} from 'actions/video';
 
 class HomePage extends React.Component {
@@ -56,6 +56,7 @@ class HomePage extends React.Component {
 							videoDuration={this.props.video.duration}
 							onAddClip={::this.handleAddClip}
 							onClipDelete={::this.props.deleteClip}
+							onClipSave={::this.props.saveClip}
 							onClipSelect={::this.handleSelectClip}
 							clips={this.props.clips} />
 					</Col>
@@ -74,5 +75,5 @@ function mapStateToProps(state) {
 
 export default connect(
 	mapStateToProps,
-	{ addClip, deleteClip, setVideoRange, setVideoMetadata }
+	{ addClip, deleteClip, saveClip, setVideoRange, setVideoMetadata }
 )(HomePage);

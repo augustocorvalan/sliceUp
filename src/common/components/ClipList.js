@@ -14,12 +14,18 @@ class ClipList extends React.Component {
 
 	handleClipDelete(i, e) {
 		e.preventDefault();
-		//this event doesn't need to bubble up
 		e.stopPropagation();
 		//unselect all clips after delete
 		this.setState({ selectedClip: -1});
 		//fire callback
 		this.props.onClipDelete && this.props.onClipDelete(i);
+	}
+
+	handleClipSave(clip, e) {
+		e.preventDefault();
+		e.stopPropagation();
+
+		this.props.onClipSave && this.props.onClipSave(clip);
 	}
 
 	handleClick(clip, i, e) {
@@ -38,6 +44,7 @@ class ClipList extends React.Component {
 					key={i} 
 					clip={clip} 
 					isSelected={i === this.state.selectedClip}
+					onClipSave={this.handleClipSave.bind(this, clip)}
 					onClick={this.handleClick.bind(this, clip, i)} 
 					onClipDelete={this.handleClipDelete.bind(this, i)} />
 			</Col>
