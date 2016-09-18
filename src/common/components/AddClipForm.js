@@ -9,8 +9,8 @@ import SubmitButton from 'common/components/SubmitButton';
 //constants
 const inputs = [
 	{ name: 'name', placeholder: 'Clip Name'},
-	{ name: 'start', placeholder: 'Start Time', type:'range'},
-	{ name: 'end', placeholder: 'End Time', type:'range'}
+	{ name: 'start', label: 'Start Time', type:'range'},
+	{ name: 'end', label: 'End Time', type:'range'}
 ];
 
 //helper functions
@@ -35,7 +35,7 @@ const AddClipForm = ({videoDuration, onAddClip}) => {
 		<Row>
 			<form onSubmit={onAddClip}>
 				{getInputs(videoDuration)}
-				<SubmitButton text="Add Clip" />
+				<SubmitButton>Add Clip</SubmitButton>
 			</form>
 		</Row>
 	);

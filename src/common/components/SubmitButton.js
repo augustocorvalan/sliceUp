@@ -1,8 +1,8 @@
 import React from 'react';
 
-const SubmitButton = ({ text }) => (
+const SubmitButton = ({ children }) => (
 	 <button className="btn waves-effect waves-light" type="submit" name="action">
-	 	{text}
+	 	{children}
 	 </button>
 );
 

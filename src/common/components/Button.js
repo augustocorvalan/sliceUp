@@ -1,7 +1,7 @@
 import React from 'react';
 
-const Button = ({text, ...otherProps}) => (
-	<a className="waves-effect waves-light btn" {...otherProps}>{text}</a>
+const Button = ({ children, ...otherProps }) => (
+	<a className="waves-effect waves-light btn" {...otherProps}>{children}</a>
 );
 
 export default Button;

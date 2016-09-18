@@ -7,21 +7,24 @@ import styles from "./style.css";
 import Row from 'common/components/Row';
 import Col from 'common/components/Col';
 import VideoPlayer from 'common/components/VideoPlayer';
-import ClipList from 'common/components/ClipList';
+import ClipPlaylist from 'common/components/ClipPlaylist';
 
 //actions
-import { addClip } from 'actions/clips';
+import { addClip, deleteClip } from 'actions/clips';
+import { setVideoRange, setVideoMetadata} from 'actions/video';
 
 class HomePage extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = { duration: 0 };
 	}
 
-	getFirstClip(e) {
+	handleLoadedMetadata(e) {
 		e.preventDefault();
-		const duration = e.target.duration;
-		this.setState({ duration })
+		const video = e.target;
+		const { duration, videoWidth, videoHeight } = video;
+
+		this.props.setVideoMetadata({ duration, width: videoWidth, height: videoHeight });
+
 		this.props.addClip('Full Video', 0, duration);
 	}
 
@@ -31,21 +34,29 @@ class HomePage extends React.Component {
 		this.props.addClip.apply(this, data);
 	}
 
+	handleSelectClip(clip) {
+		const { start, end } = clip;
+		this.props.setVideoRange({ start, end });
+	}
+
 	render() {
 		return (
 			<div>
 				<Row>
 					<Col>
 						<VideoPlayer 
+							{...this.props.video}
 							className='center-align' 
-							onLoadedMetadata={::this.getFirstClip} />
+							onLoadedMetadata={::this.handleLoadedMetadata} />
 					</Col>
 				</Row>
 				<Row>
 					<Col>
-						<ClipList 
-							videoDuration={this.state.duration}
+						<ClipPlaylist 
+							videoDuration={this.props.video.duration}
 							onAddClip={::this.handleAddClip}
+							onClipDelete={::this.props.deleteClip}
+							onClipSelect={::this.handleSelectClip}
 							clips={this.props.clips} />
 					</Col>
 				</Row>
@@ -56,11 +67,12 @@ class HomePage extends React.Component {
 
 function mapStateToProps(state) {
 	return {
-		clips: state.clips
+		clips: state.clips,
+		video: state.video
 	}
 }
 
 export default connect(
 	mapStateToProps,
-	{ addClip }
+	{ addClip, deleteClip, setVideoRange, setVideoMetadata }
 )(HomePage);

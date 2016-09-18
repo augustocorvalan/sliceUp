@@ -1,0 +1,7 @@
+.clip-card {
+	cursor: pointer;
+
+	&.is-selected {
+		outline: 1px solid gold;
+	}
+}

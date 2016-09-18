@@ -57,6 +57,7 @@
     "classnames": "^2.2.5",
     "express": "^4.12.3",
     "lodash.map": "^4.6.0",
+    "lodash.once": "^4.1.1",
     "react": "^15.1.0",
     "react-dom": "^15.1.0",
     "react-redux": "^4.4.0",
