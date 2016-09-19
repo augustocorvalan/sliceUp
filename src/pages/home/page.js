@@ -57,7 +57,11 @@ class HomePage extends React.Component {
 
 	handleClipSave(clip, e) {
 		clearEvent(e);
-		this.props.saveClip(clip);
+
+		//only save clip if it hasn't already been saved
+		if (!clip.isSaved) {
+			this.props.saveClip(clip);
+		}
 	}
 
 	handleClipSelect(clip) {
@@ -70,8 +74,7 @@ class HomePage extends React.Component {
 	handleClipUpdate(clip, e) {
 		clearEvent(e);
 		this.setState({ editedClip: 0 });
-		//TODO: MAYBE THIS WASNT SO SMART TAKE A LOOK TOMORROW
-		this.props.updateClip.apply(this, [clip.id, ...getValuesFromEvent(e)]);
+		this.props.updateClip.apply(this, [clip.id, clip.isSaved, ...getValuesFromEvent(e)]);
 	}
 
 	render() {
