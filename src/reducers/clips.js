@@ -51,7 +51,8 @@ export default handleActions({
 		return {...state, [id]: newClip};
 	},
 	[updateClip]: (state, action) => {
-		const newClip = { [action.payload.id]: action.payload };
+		const { clip } = action.payload;
+		const newClip = { [clip.id]: clip };
 
 		//update in clip storage
 		savedClips = {...savedClips, ...newClip };

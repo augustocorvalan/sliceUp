@@ -21,7 +21,7 @@ class HomePage extends React.Component {
 
 		//whether a clip is selected or edited is a UI concern and thus can be stored in state
 		//rather than in our app wide store
-		this.state = { selectedClip: 0, editedClip: 0 };
+		this.state = { selectedClip: null, editedClip: null };
 	}
 
 	clearEvent(e) {
@@ -45,7 +45,7 @@ class HomePage extends React.Component {
 	handleClipDelete(clip, e) {
 		clearEvent(e);
 		//unselect all clips after delete
-		this.setState({ selectedClip: 0 });
+		this.setState({ selectedClip: null });
 		//fire action
 		this.props.deleteClip(clip);
 	}
@@ -73,8 +73,10 @@ class HomePage extends React.Component {
 
 	handleClipUpdate(clip, e) {
 		clearEvent(e);
-		this.setState({ editedClip: 0 });
-		this.props.updateClip.apply(this, [clip.id, clip.isSaved, ...getValuesFromEvent(e)]);
+		const [ name, start, end ] = getValuesFromEvent(e);
+
+		this.setState({ editedClip: null });
+		this.props.updateClip({...clip, name, start, end});
 	}
 
 	render() {
