@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from 'react-redux';
-import styles from "./style.css";
+//keyboard utility higher order component 
+import {mouseTrap} from 'react-mousetrap';
 
 //components
 import Row from 'common/components/Row';
@@ -22,6 +23,18 @@ class HomePage extends React.Component {
 		//whether a clip is selected or edited is a UI concern and thus can be stored in state
 		//rather than in our app wide store
 		this.state = { selectedClip: null, editedClip: null };
+	}
+
+	componentWillMount() {
+		//bindShortcut comes from mouseTrap HOC
+		this.props.bindShortcut('right', this.handleHotkey.bind(this, 'next'));      
+		this.props.bindShortcut('left', this.handleHotkey.bind(this, 'prev'));
+	}
+
+	componentWillUnmount() {
+		//clean up
+		this.props.unbindShortcut('right');
+		this.props.unbindShortcut('left');
 	}
 
 	clearEvent(e) {
@@ -79,6 +92,27 @@ class HomePage extends React.Component {
 		this.props.updateClip({...clip, name, start, end});
 	}
 
+	handleHotkey(type) {
+		const keys = Object.keys(this.props.clips);
+		const selectedClip = this.state.selectedClip;
+		let clipIndex = 0;
+
+		//if we have a clip selected, move to next/prev. Otherwise start at first clip
+		if (selectedClip) {
+			clipIndex = keys.indexOf(selectedClip);
+
+			//adjust clip index based on direction
+			clipIndex = type === 'next' ? clipIndex + 1 : clipIndex - 1;
+		}
+
+		//if clip is within bounds go to next/prev clip
+		if (clipIndex > -1 && clipIndex < keys.length) {
+			const newSelected = this.props.clips[keys[clipIndex]];
+
+			this.handleClipSelect(newSelected);
+		}
+	}
+
 	render() {
 		return (
 			<div>
@@ -89,6 +123,9 @@ class HomePage extends React.Component {
 							className='center-align' 
 							onLoadedMetadata={::this.handleLoadedMetadata} />
 					</Col>
+				</Row>
+				<Row>
+					<Col>Select clips using the left and right arrow hotkeys</Col>
 				</Row>
 				<Row>
 					<Col>
@@ -120,4 +157,4 @@ function mapStateToProps(state) {
 export default connect(
 	mapStateToProps,
 	{ addClip, deleteClip, saveClip, updateClip, setVideoRange, setVideoMetadata }
-)(HomePage);
+)(mouseTrap(HomePage));

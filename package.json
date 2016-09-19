@@ -61,6 +61,7 @@
     "lodash.once": "^4.1.1",
     "react": "^15.1.0",
     "react-dom": "^15.1.0",
+    "react-mousetrap": "^0.1.1",
     "react-redux": "^4.4.0",
     "react-router": "^2.0.0",
     "react-router-redux": "^4.0.2",
