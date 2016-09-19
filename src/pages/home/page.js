@@ -1,5 +1,4 @@
 import React from "react";
-import map from 'lodash.map';
 import { connect } from 'react-redux';
 import styles from "./style.css";
 
@@ -10,33 +9,69 @@ import VideoPlayer from 'common/components/VideoPlayer';
 import ClipPlaylist from 'common/components/ClipPlaylist';
 
 //actions
-import { addClip, deleteClip, saveClip } from 'actions/clips';
+import { addClip, deleteClip, saveClip, updateClip } from 'actions/clips';
 import { setVideoRange, setVideoMetadata} from 'actions/video';
+
+//utils
+import { clearEvent, getValuesFromEvent } from 'utils/eventUtils';
 
 class HomePage extends React.Component {
 	constructor(props) {
 		super(props);
+
+		//whether a clip is selected or edited is a UI concern and thus can be stored in state
+		//rather than in our app wide store
+		this.state = { selectedClip: 0, editedClip: 0 };
+	}
+
+	clearEvent(e) {
+		e.preventDefault();
+		e.stopPropagation();
 	}
 
 	handleLoadedMetadata(e) {
-		e.preventDefault();
+		clearEvent(e);
 		const video = e.target;
 		const { duration, videoWidth, videoHeight } = video;
 
 		this.props.setVideoMetadata({ duration, width: videoWidth, height: videoHeight });
-
-		this.props.addClip('Full Video', 0, duration);
 	}
 
-	handleAddClip(e) {
-		e.preventDefault();
-		let data = map($(e.target).serializeArray(), 'value');
-		this.props.addClip.apply(this, data);
+	handleClipAdd(e) {
+		clearEvent(e);
+		this.props.addClip.apply(this, getValuesFromEvent(e));
 	}
 
-	handleSelectClip(clip) {
+	handleClipDelete(clip, e) {
+		clearEvent(e);
+		//unselect all clips after delete
+		this.setState({ selectedClip: 0 });
+		//fire action
+		this.props.deleteClip(clip);
+	}
+
+	handleClipEdit(clip, e) {
+		clearEvent(e);
+		this.setState({ editedClip: clip.id });
+	}
+
+	handleClipSave(clip, e) {
+		clearEvent(e);
+		this.props.saveClip(clip);
+	}
+
+	handleClipSelect(clip) {
 		const { start, end } = clip;
+		this.setState({ selectedClip: clip.id });
+
 		this.props.setVideoRange({ start, end });
+	}
+
+	handleClipUpdate(clip, e) {
+		clearEvent(e);
+		this.setState({ editedClip: 0 });
+		//TODO: MAYBE THIS WASNT SO SMART TAKE A LOOK TOMORROW
+		this.props.updateClip.apply(this, [clip.id, ...getValuesFromEvent(e)]);
 	}
 
 	render() {
@@ -53,11 +88,15 @@ class HomePage extends React.Component {
 				<Row>
 					<Col>
 						<ClipPlaylist 
+							selectedClip={this.state.selectedClip}
+							editedClip={this.state.editedClip}
 							videoDuration={this.props.video.duration}
-							onAddClip={::this.handleAddClip}
-							onClipDelete={::this.props.deleteClip}
-							onClipSave={::this.props.saveClip}
-							onClipSelect={::this.handleSelectClip}
+							onClipAdd={::this.handleClipAdd}
+							onClipDelete={::this.handleClipDelete}
+							onClipEdit={::this.handleClipEdit}
+							onClipSave={::this.handleClipSave}
+							onClipSelect={::this.handleClipSelect}
+							onClipUpdate={::this.handleClipUpdate}
 							clips={this.props.clips} />
 					</Col>
 				</Row>
@@ -75,5 +114,5 @@ function mapStateToProps(state) {
 
 export default connect(
 	mapStateToProps,
-	{ addClip, deleteClip, saveClip, setVideoRange, setVideoMetadata }
+	{ addClip, deleteClip, saveClip, updateClip, setVideoRange, setVideoMetadata }
 )(HomePage);

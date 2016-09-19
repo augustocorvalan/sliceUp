@@ -5,20 +5,15 @@ import Col from 'common/components/Col';
 import AddClipCard from 'common/components/AddClipCard';
 import ClipList from 'common/components/ClipList';
 
-const ClipPlaylist = ({ onAddClip, videoDuration, ...clipProps }) => {
-	return (
-		<Row>
-			<Col s='3'>
-				<AddClipCard onAddClip={onAddClip} videoDuration={videoDuration} />
-			</Col>
-			<ClipList {...clipProps} />
-		</Row>
-	);
-}
-
-ClipList.defaultProps = {
-	clips: [],
-	onClipSelect: () => {} 
-}
+const ClipPlaylist = ({ onClipAdd, videoDuration, ...clipProps }) => (
+	<Row>
+		<Col s='3'>
+			<Row>
+				<AddClipCard onClipAdd={onClipAdd} max={videoDuration} />
+			</Row>
+		</Col>
+		<ClipList videoDuration={videoDuration} {...clipProps} />
+	</Row>
+)
 
 export default ClipPlaylist;
