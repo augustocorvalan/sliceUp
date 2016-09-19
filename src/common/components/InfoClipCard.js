@@ -17,13 +17,13 @@ const InfoClipCard = ({ clip, isSelected, onClipSelect, onClipDelete, onClipSave
 		</Row>
 		<Row>
 			<Col s='4'>
-				<EditButton onClick={onClipEdit.bind(this, clip)} />
+				<EditButton disabled={!onClipEdit} onClick={onClipEdit && onClipEdit.bind(this, clip)} />
 			</Col>
 			<Col s='4'>
-				<SaveButton onClick={onClipSave.bind(this, clip)} />
+				<SaveButton disabled={clip.isSaved || !onClipSave} onClick={onClipSave && onClipSave.bind(this, clip)} />
 			</Col>
 			<Col s='4'>
-				<DeleteButton onClick={onClipDelete.bind(this, clip)} />
+				<DeleteButton disabled={!onClipDelete} onClick={onClipDelete && onClipDelete.bind(this, clip)} />
 			</Col>
 		</Row>
 	</div>

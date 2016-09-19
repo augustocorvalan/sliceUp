@@ -11,8 +11,9 @@ import { getClipsFromStorage, saveClipsToStorage} from 'utils/clipStorage';
 let savedClips = getClipsFromStorage() || [];
 
 const id = shortid.generate();
-//the first clip is the full video and so has no start or end
-const firstClip = { [id]: {id, name: 'Full Video', start: '', end: ''}};
+//the first clip is the full video and so has no start or end. 
+//The flag is to mark it off from the rest of the clips
+const firstClip = { [id]: {id, name: 'Full Video', start: '', end: '', isFullVideo: true}};
 const initState = {...firstClip, ...savedClips};
 
 export default handleActions({
