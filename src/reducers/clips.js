@@ -18,6 +18,10 @@ const initState = {...firstClip, ...savedClips};
 export default handleActions({
 	[addClip]: (state, action) => {
 		const { name, start, end } = action.payload;
+		//TODO: usually I would hook up actual validation to the forms,
+		//I've had good results using 'redux-forms'
+		//but that seemed outside the scope of this assignment 
+		if (+start > +end) start = end;
 		const id = shortid.generate();
 		const newClip = {id, name, start, end};
 
