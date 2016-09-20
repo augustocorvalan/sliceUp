@@ -37,15 +37,9 @@ class HomePage extends React.Component {
 		this.props.unbindShortcut('left');
 	}
 
-	clearEvent(e) {
-		e.preventDefault();
-		e.stopPropagation();
-	}
-
 	handleLoadedMetadata(e) {
 		clearEvent(e);
-		const video = e.target;
-		const { duration, videoWidth, videoHeight } = video;
+		const { duration, videoWidth, videoHeight } = e.target;
 
 		this.props.setVideoMetadata({ duration, width: videoWidth, height: videoHeight });
 	}
