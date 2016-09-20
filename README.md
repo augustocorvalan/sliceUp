@@ -1,13 +1,18 @@
-# Redux Shell
+# SliceUp
 
-Built on top of the skeleton of [Essential React](https://github.com/pheuter/essential-react)
+An exploration of HTML5 video media fragments, SliceUp is an application that allows a user to create clips from a video.
 
-To start developing you will need Node (v4.4.4) and npm installed. Navigate to top level folder and do an `npm install`. Runs off of webpack + babel (for ES6). Pertinent commands:
+Built on top of the skeleton of my [Redux Shell](https://github.com/pheuter/essential-react), utilizes:
+
++ React/Redux
++ postCSS
++ webpack + babel
+
+To run, make sure you run `npm install` first, then:
 
 + `npm run server` - Runs the dev server
 + `npm run build` - Creates a production build
 
-The app is built on React, uses Redux as a framework, postCSS for styling. Tries to adhere to [Dan Abramov's smart and dumb component philosophy](https://medium.com/@dan_abramov/smart-and-dumb-components-7ca2f9a7c7d0)
 
 
 
