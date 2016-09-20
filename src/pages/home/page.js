@@ -108,12 +108,14 @@ class HomePage extends React.Component {
 	}
 
 	render() {
+		const { duration, ...playerProps } = this.props.video;
+
 		return (
 			<div>
 				<Row>
 					<Col>
 						<VideoPlayer 
-							{...this.props.video}
+							{...playerProps}
 							className='center-align' 
 							onLoadedMetadata={::this.handleLoadedMetadata} />
 					</Col>
